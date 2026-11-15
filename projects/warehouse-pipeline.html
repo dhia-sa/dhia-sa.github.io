@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automated Data Warehouse Pipeline — Dhia Salsabila Azhar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+  </script>
+  <style>body{font-family:Inter,system-ui,sans-serif}</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-5 h-16 flex items-center">
+      <a href="../index.html#projects" class="text-sm font-medium text-indigo-600 hover:underline">← Back to projects</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-5 py-12">
+    <span class="text-xs font-medium bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">Internal case study · data anonymized</span>
+    <h1 class="text-3xl md:text-4xl font-extrabold mt-4">Automated Data Warehouse Pipeline</h1>
+    <p class="text-lg text-slate-600 mt-3">A single source of truth for a multi-store F&amp;B retail business: 389 scheduled ETL tasks loading POS, ERP and spreadsheet data into a cloud warehouse every day.</p>
+
+    <div class="flex flex-wrap gap-2 mt-6 text-sm">
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Alibaba Cloud AnalyticDB (PostgreSQL)</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">DataWorks</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Python</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">SQL</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Power BI</span>
+    </div>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold mb-3">The problem</h2>
+      <p class="text-slate-600 leading-relaxed">Sales, finance and operations data lived in separate systems — POS, SAP Business One, JotForm and many manually shared Excel/Google Sheets files. Reporting meant manual exports and copy-paste, and different teams got different numbers.
+      <!-- TODO: add how long reporting used to take / what pain it caused --></p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Architecture</h2>
+      <div class="bg-white border border-slate-200 rounded-xl p-6 overflow-x-auto">
+        <pre class="mermaid">
+flowchart LR
+  subgraph Sources
+    A[POS: iSeller / ESB]
+    B[SAP Business One]
+    C[JotForm]
+    D[Excel / Google Sheets<br/>on Google Drive]
+    E[Accurate API]
+  end
+  subgraph DataWorks["Alibaba DataWorks (scheduled Python & SQL nodes)"]
+    F[Extract & load<br/>full + incremental]
+  end
+  subgraph Warehouse["AnalyticDB for PostgreSQL"]
+    G[Raw / staging]
+    H[Clean models & marts]
+  end
+  A --> F
+  B --> F
+  C --> F
+  D --> F
+  E --> F
+  F --> G --> H --> I[Power BI dashboards]
+  H --> J[Forecasting & suggested ordering]
+        </pre>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">What I built</h2>
+      <ul class="list-disc pl-5 space-y-2 text-slate-600">
+        <li>389 scheduled daily tasks in DataWorks, running Python jobs on a custom image.</li>
+        <li>Historical backfills plus incremental loads for millions of sales rows.</li>
+        <li>Connectors for POS systems, SAP B1, JotForm, REST APIs and Drive-hosted spreadsheets.</li>
+        <li>A reconciliation process: agree metric definitions with stakeholders first, then check numbers per transaction/document until they tie out.</li>
+        <!-- TODO: add monitoring / alerting / data-quality checks if you have them -->
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Impact</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">389</div><div class="text-sm text-slate-500">automated daily tasks</div></div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">5+</div><div class="text-sm text-slate-500">source systems unified</div></div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">[X hrs]</div><div class="text-sm text-slate-500">manual work saved / week (fill in)</div></div>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Screenshots</h2>
+      <p class="text-sm text-slate-500 mb-3">Blur any company names, figures or customer data before adding images.</p>
+      <!-- <img src="../assets/img/warehouse-dag.png" class="rounded-xl border border-slate-200" alt="DataWorks DAG" /> -->
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">What I learned</h2>
+      <p class="text-slate-600 leading-relaxed"><!-- TODO: 2–3 sentences, e.g. on idempotent loads, handling late data, aligning definitions with finance --></p>
+    </section>
+  </main>
+</body>
+</html>

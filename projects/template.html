@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PROJECT TITLE — Dhia Salsabila Azhar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+  </script>
+  <style>body{font-family:Inter,system-ui,sans-serif}</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+  <!--  HOW TO USE: copy this file, rename it (e.g. sap-ar-ap.html), fill in each section,
+        then set the project's `link` in assets/projects.js to "projects/sap-ar-ap.html". -->
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-5 h-16 flex items-center">
+      <a href="../index.html#projects" class="text-sm font-medium text-indigo-600 hover:underline">← Back to projects</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-5 py-12">
+    <span class="text-xs font-medium bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">Internal case study · data anonymized</span>
+    <h1 class="text-3xl md:text-4xl font-extrabold mt-4">Project title</h1>
+    <p class="text-lg text-slate-600 mt-3">One-sentence summary of what this is and why it matters.</p>
+
+    <div class="flex flex-wrap gap-2 mt-6 text-sm">
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Tool 1</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Tool 2</span>
+    </div>
+    <!-- For public projects, add: <a href="https://github.com/..." class="...">View code</a> -->
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold mb-3">The problem</h2>
+      <p class="text-slate-600 leading-relaxed">What was painful or unknown before? Who was affected?</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Architecture / approach</h2>
+      <div class="bg-white border border-slate-200 rounded-xl p-6 overflow-x-auto">
+        <pre class="mermaid">
+flowchart LR
+  A[Source] --> B[Process] --> C[Output]
+        </pre>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">What I built</h2>
+      <ul class="list-disc pl-5 space-y-2 text-slate-600">
+        <li>Key piece 1</li>
+        <li>Key piece 2</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Impact</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">[metric]</div><div class="text-sm text-slate-500">label</div></div>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Screenshots</h2>
+      <!-- <img src="../assets/img/xxx.png" class="rounded-xl border border-slate-200" alt="" /> -->
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">What I learned</h2>
+      <p class="text-slate-600 leading-relaxed">2–3 sentences.</p>
+    </section>
+  </main>
+</body>
+</html>
