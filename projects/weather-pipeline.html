@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indonesia Weather Data Pipeline — Dhia Salsabila Azhar</title>
+  <meta name="description" content="End-to-end data engineering project: Open-Meteo API → Python → Postgres → dbt → Streamlit, scheduled daily with GitHub Actions." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+  </script>
+  <style>body{font-family:Inter,system-ui,sans-serif}</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-5 h-16 flex items-center">
+      <a href="../index.html#projects" class="text-sm font-medium text-indigo-600 hover:underline">← Back to projects</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-5 py-12">
+    <span class="text-xs font-medium bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Public project · open source</span>
+    <h1 class="text-3xl md:text-4xl font-extrabold mt-4">Indonesia Weather Data Pipeline</h1>
+    <p class="text-lg text-slate-600 mt-3">A daily, fully automated pipeline that collects weather data for 10 Indonesian cities, models it into a tested warehouse, and serves it in a live dashboard. It runs entirely on free tiers.</p>
+
+    <div class="flex flex-wrap gap-3 mt-6">
+      <!-- ▼ Replace with your Streamlit app address -->
+      <a href="https://YOUR-APP.streamlit.app" target="_blank" rel="noopener" class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-indigo-700">Live dashboard ↗</a>
+      <a href="https://github.com/dhia-sa/indonesia-weather-pipeline" target="_blank" rel="noopener" class="border border-slate-300 bg-white px-4 py-2.5 rounded-lg font-semibold hover:border-indigo-400">View code on GitHub ↗</a>
+    </div>
+
+    <div class="flex flex-wrap gap-2 mt-6 text-sm">
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Python</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">PostgreSQL (Neon)</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">dbt</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">GitHub Actions</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Streamlit</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">REST API</span>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10">
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">10</div><div class="text-sm text-slate-500">cities across 5 islands</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">2020→</div><div class="text-sm text-slate-500">daily history, updated every day</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">35</div><div class="text-sm text-slate-500">dbt models &amp; data tests</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">Rp 0</div><div class="text-sm text-slate-500">monthly running cost</div></div>
+    </div>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold mb-3">The problem</h2>
+      <p class="text-slate-600 leading-relaxed">In retail and F&amp;B, weather drives store traffic and demand: rainy days change what and how much customers buy. To use weather in sales analysis or demand forecasting, you first need a <strong>reliable, clean, always-up-to-date</strong> weather dataset. This project builds that dataset the way a production pipeline should: automated, idempotent, tested and monitored.</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Architecture</h2>
+      <div class="bg-white border border-slate-200 rounded-xl p-6 overflow-x-auto">
+        <pre class="mermaid">
+flowchart LR
+  A[Open-Meteo<br/>Historical Weather API] -->|Python extractor<br/>retries, upserts| B[(Postgres<br/>raw)]
+  B -->|dbt| C[(staging)]
+  C -->|dbt| D[(marts)]
+  D --> E[Streamlit dashboard]
+  F[GitHub Actions<br/>daily 07:17 WIB] -.runs.-> A
+  F -.dbt build + tests.-> D
+        </pre>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">What I built</h2>
+      <ul class="list-disc pl-5 space-y-2 text-slate-600">
+        <li><strong>Python extractor</strong> with exponential-backoff retries, a one-time historical backfill, and daily incremental loads.</li>
+        <li><strong>Raw layer in Postgres</strong>: API values stored untouched as JSONB, plus a run log (status, row counts, errors) for every run.</li>
+        <li><strong>dbt project</strong> (raw → staging → marts): a daily fact table, city dimension, monthly climate summary, temperature anomaly detection (z-score vs. each city's monthly normal), and pipeline-health models.</li>
+        <li><strong>Data quality</strong>: uniqueness, not-null, referential-integrity and value-range tests, plus source freshness alerts.</li>
+        <li><strong>Orchestration and CI with GitHub Actions</strong>: a daily schedule, a manual backfill button, and linting, unit tests and dbt validation on every push.</li>
+        <li><strong>Streamlit dashboard</strong> with city trends, a city comparison, anomalies, and a pipeline-health page.</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Key design decisions</h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Idempotent loads</h3>
+          <p class="text-sm text-slate-600 mt-1">Every write is an upsert on (city, date). Re-running any load never creates duplicates, and unchanged rows are skipped, so each run reports exactly what was new or revised.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Late &amp; revised data</h3>
+          <p class="text-sm text-slate-600 mt-1">Archive data arrives about 5 days late and can be revised, so each daily run re-reads a 10-day window. Days that aren't available yet are skipped and picked up later.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Raw stays raw</h3>
+          <p class="text-sm text-slate-600 mt-1">All typing and business logic lives in dbt, so it is versioned, tested and documented, and history can be re-modelled without calling the API again.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Fail loudly</h3>
+          <p class="text-sm text-slate-600 mt-1">One failing city doesn't block the others, but the run is marked as a partial failure and the job turns red, so problems are never silent.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Screenshots</h2>
+      <!-- Take a screenshot of your Streamlit dashboard, upload it to assets/img/weather-dashboard.png, then remove the comment marks below. -->
+      <!-- <img src="../assets/img/weather-dashboard.png" class="rounded-xl border border-slate-200" alt="Streamlit dashboard" /> -->
+      <p class="text-sm text-slate-500">See the <a href="https://YOUR-APP.streamlit.app" target="_blank" rel="noopener" class="text-indigo-600 hover:underline">live dashboard</a>.</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">What's next</h2>
+      <ul class="list-disc pl-5 space-y-2 text-slate-600">
+        <li>Add the forecast API and measure forecast accuracy per city.</li>
+        <li>Join weather to (synthetic) store sales to model the impact of weather on demand.</li>
+        <li>Send failure alerts to Telegram or Slack.</li>
+      </ul>
+    </section>
+
+    <p class="text-xs text-slate-400 mt-12">Weather data by <a href="https://open-meteo.com/" class="underline" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0).</p>
+  </main>
+</body>
+</html>
