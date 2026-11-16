@@ -6,6 +6,14 @@
 //  image:    optional, e.g. "assets/img/warehouse.png"
 // ============================================================
 const PROJECTS = [
+    {
+    title: "Indonesia Weather Data Pipeline",
+    summary: "Daily pipeline for 10 Indonesian cities: Open-Meteo API → Postgres → dbt models & data tests → Streamlit dashboard, scheduled with GitHub Actions.",
+    category: "Data Engineering",
+    type: "Public",
+    tags: ["Python", "PostgreSQL (Neon)", "dbt", "GitHub Actions", "Streamlit"],
+    link: "projects/weather-pipeline.html",
+  },
   {
     title: "Automated Data Warehouse Pipeline",
     summary: "389 daily ETL tasks loading POS, ERP and spreadsheet data into a cloud warehouse, processing millions of sales rows.",
