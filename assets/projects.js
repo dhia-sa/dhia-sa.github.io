@@ -93,7 +93,7 @@ const PROJECTS = [
     type: "Public",
     tags: ["dbt", "DuckDB", "SQL", "Streamlit", "GitHub Actions"],
     link: "projects/ecommerce-analytics.html",
-  },,
+  },
 ];
 
 // ------------------------------------------------------------
