@@ -86,14 +86,14 @@ const PROJECTS = [
     tags: ["Power BI", "DAX", "Data storytelling"],
     link: "https://datadna.onyxdata.co.uk/portfolios/animal-shelter-dashboard/",
   },
-  {
+    {
     title: "E-commerce Analytics with dbt + DuckDB",
-    summary: "Public analytics-engineering project on the Olist Brazilian e-commerce dataset: staging → marts, tests, docs.",
+    summary: "~100k Olist orders modelled with dbt on DuckDB into a tested star schema and business marts (sales, delivery, RFM, cohorts, sellers) with 66 data tests and a Streamlit dashboard.",
     category: "Analytics & BI",
-    type: "Coming soon",
-    tags: ["dbt", "DuckDB", "GitHub Actions"],
-    link: "#",
-  },
+    type: "Public",
+    tags: ["dbt", "DuckDB", "SQL", "Streamlit", "GitHub Actions"],
+    link: "projects/ecommerce-analytics.html",
+  },,
 ];
 
 // ------------------------------------------------------------
