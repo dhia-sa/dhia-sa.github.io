@@ -26,7 +26,8 @@
     <p class="text-lg text-slate-600 mt-3">An end-to-end analytics engineering project. About 100k raw e-commerce orders are modelled with dbt into a tested star schema and business-ready marts covering sales, delivery, customer RFM, cohort retention and sellers. The results are served in a Streamlit dashboard, and the whole build runs on a laptop in about 10 seconds with no cloud warehouse.</p>
 
     <div class="flex flex-wrap gap-3 mt-6">
-      <a href="https://github.com/dhia-sa/ecommerce-analytics-dbt" target="_blank" rel="noopener" class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-indigo-700">View code on GitHub ↗</a>
+      <a href="https://dhia-sa-ecommerce-analytics.streamlit.app/" target="_blank" rel="noopener" class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-indigo-700">Live dashboard ↗</a>
+      <a href="https://github.com/dhia-sa/ecommerce-analytics-dbt" target="_blank" rel="noopener" class="border border-slate-300 bg-white px-4 py-2.5 rounded-lg font-semibold hover:border-indigo-400">View code on GitHub ↗</a>
       <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce" target="_blank" rel="noopener" class="border border-slate-300 bg-white px-4 py-2.5 rounded-lg font-semibold hover:border-indigo-400">Dataset on Kaggle ↗</a>
     </div>
 
@@ -125,16 +126,27 @@ flowchart LR
       <p class="text-slate-600 leading-relaxed">66 data tests cover keys, relationships, accepted values, ranges and singular business rules. On every push, GitHub Actions lints the SQL with <strong>sqlfluff</strong> and compiles all models. When Kaggle credentials are available, it also runs the full build and publishes the dbt docs (with lineage) as an artifact.</p>
     </section>
 
+    <section class="mt-10" id="live-dashboard">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <h2 class="text-xl font-bold">Live dashboard</h2>
+        <a href="https://dhia-sa-ecommerce-analytics.streamlit.app/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold border border-slate-300 bg-white px-3 py-2 rounded-lg hover:border-indigo-400">Open full screen ↗</a>
+      </div>
+      <div class="rounded-xl border border-slate-200 shadow-sm overflow-hidden bg-white">
+        <iframe src="https://dhia-sa-ecommerce-analytics.streamlit.app/?embed=true" title="E-commerce analytics live dashboard" loading="lazy" class="w-full block h-[640px] md:h-[820px]" allow="clipboard-write"></iframe>
+      </div>
+      <p class="text-sm text-slate-500 mt-2">The dashboard runs on Streamlit Community Cloud's free tier. If it has been idle, it may show a wake-up screen first; it's ready in about 30 seconds.</p>
+    </section>
+
     <section class="mt-10">
       <h2 class="text-xl font-bold mb-4">Screenshots</h2>
       <div class="space-y-5">
         <figure>
-          <a href="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_overview.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_overview.jpg" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition" alt="Streamlit dashboard overview" /></a>
-          <figcaption class="text-sm text-slate-500 mt-2">Dashboard overview: sales KPIs and trends.</figcaption>
+          <a href="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_overview.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_overview.jpg" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition" alt="Streamlit dashboard overview with GMV, orders, average order value and late delivery rate cards" /></a>
+          <figcaption class="text-sm text-slate-500 mt-2">Dashboard overview: headline KPIs with year-over-year change and monthly trend sparklines.</figcaption>
         </figure>
         <figure>
-          <a href="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_delivery.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_delivery.jpg" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition" alt="Late delivery rate by state" /></a>
-          <figcaption class="text-sm text-slate-500 mt-2">Delivery performance: late-delivery rate by Brazilian state.</figcaption>
+          <a href="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_delivery.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_delivery.jpg" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition" alt="Late delivery rate by state and review scores for late vs on-time orders" /></a>
+          <figcaption class="text-sm text-slate-500 mt-2">Delivery &amp; reviews: late-delivery rate by Brazilian state, and how late orders drag review scores down.</figcaption>
         </figure>
         <figure>
           <a href="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/lineage.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/lineage.png" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition bg-white" alt="dbt lineage graph" /></a>
