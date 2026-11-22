@@ -26,8 +26,7 @@
     <p class="text-lg text-slate-600 mt-3">A daily, fully automated pipeline that collects weather data for 10 Indonesian cities, models it into a tested warehouse, and serves it in a live dashboard. It runs entirely on free tiers.</p>
 
     <div class="flex flex-wrap gap-3 mt-6">
-      <!-- ▼ Replace with your Streamlit app address -->
-      <a href="https://YOUR-APP.streamlit.app" target="_blank" rel="noopener" class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-indigo-700">Live dashboard ↗</a>
+      <a href="https://indonesia-weather-pipeline-2bixeqvwpodjkoxqbz32a9.streamlit.app" target="_blank" rel="noopener" class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-indigo-700">Live dashboard ↗</a>
       <a href="https://github.com/dhia-sa/indonesia-weather-pipeline" target="_blank" rel="noopener" class="border border-slate-300 bg-white px-4 py-2.5 rounded-lg font-semibold hover:border-indigo-400">View code on GitHub ↗</a>
     </div>
 
@@ -102,10 +101,27 @@ flowchart LR
     </section>
 
     <section class="mt-10">
-      <h2 class="text-xl font-bold mb-3">Screenshots</h2>
-      <!-- Take a screenshot of your Streamlit dashboard, upload it to assets/img/weather-dashboard.png, then remove the comment marks below. -->
-      <!-- <img src="../assets/img/weather-dashboard.png" class="rounded-xl border border-slate-200" alt="Streamlit dashboard" /> -->
-      <p class="text-sm text-slate-500">See the <a href="https://YOUR-APP.streamlit.app" target="_blank" rel="noopener" class="text-indigo-600 hover:underline">live dashboard</a>.</p>
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <h2 class="text-xl font-bold">Dashboard</h2>
+        <a href="../assets/indonesia-weather-dashboard.pdf" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold border border-slate-300 bg-white px-3 py-2 rounded-lg hover:border-indigo-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>
+          Download full dashboard (PDF)
+        </a>
+      </div>
+      <div class="space-y-5">
+        <figure>
+          <a href="../assets/weather-dashboard-hero.jpg" target="_blank" rel="noopener"><img src="../assets/weather-dashboard-hero.jpg" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition" alt="Hero card with the latest weather in Jakarta and a map of the latest max temperature by city" /></a>
+          <figcaption class="text-sm text-slate-500 mt-2">Latest-day weather card (the background changes with the weather) and a map of the latest max temperature across 10 cities.</figcaption>
+        </figure>
+        <figure>
+          <a href="../assets/weather-dashboard-tiles.jpg" target="_blank" rel="noopener"><img src="../assets/weather-dashboard-tiles.jpg" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition" alt="Metric tiles for rain, wind, sunshine and solar radiation, plus a last-7-days strip" /></a>
+          <figcaption class="text-sm text-slate-500 mt-2">Daily metrics, period summaries and a last-7-days strip.</figcaption>
+        </figure>
+        <figure>
+          <a href="../assets/weather-dashboard-trends.jpg" target="_blank" rel="noopener"><img src="../assets/weather-dashboard-trends.jpg" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition" alt="One-year chart of daily max and min temperature, 7-day mean and daily rainfall" /></a>
+          <figcaption class="text-sm text-slate-500 mt-2">One year of temperature range, 7-day mean and daily rainfall. More tabs on the <a href="https://indonesia-weather-pipeline-2bixeqvwpodjkoxqbz32a9.streamlit.app" target="_blank" rel="noopener" class="text-indigo-600 hover:underline">live dashboard</a>: climate heatmaps, city comparison, anomalies and pipeline health.</figcaption>
+        </figure>
+      </div>
     </section>
 
     <section class="mt-10">
