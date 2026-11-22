@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-commerce Analytics with dbt + DuckDB — Dhia Salsabila Azhar</title>
+  <meta name="description" content="Analytics engineering project: Olist e-commerce data modelled with dbt on DuckDB into a tested star schema and business marts, served in Streamlit." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+  </script>
+  <style>body{font-family:Inter,system-ui,sans-serif}</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-5 h-16 flex items-center">
+      <a href="../index.html#projects" class="text-sm font-medium text-indigo-600 hover:underline">← Back to projects</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-5 py-12">
+    <span class="text-xs font-medium bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Public project · open source</span>
+    <h1 class="text-3xl md:text-4xl font-extrabold mt-4">E-commerce Analytics with dbt + DuckDB</h1>
+    <p class="text-lg text-slate-600 mt-3">An end-to-end analytics engineering project. About 100k raw e-commerce orders are modelled with dbt into a tested star schema and business-ready marts covering sales, delivery, customer RFM, cohort retention and sellers. The results are served in a Streamlit dashboard, and the whole build runs on a laptop in about 10 seconds with no cloud warehouse.</p>
+
+    <div class="flex flex-wrap gap-3 mt-6">
+      <a href="https://github.com/dhia-sa/ecommerce-analytics-dbt" target="_blank" rel="noopener" class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-indigo-700">View code on GitHub ↗</a>
+      <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce" target="_blank" rel="noopener" class="border border-slate-300 bg-white px-4 py-2.5 rounded-lg font-semibold hover:border-indigo-400">Dataset on Kaggle ↗</a>
+    </div>
+
+    <div class="flex flex-wrap gap-2 mt-6 text-sm">
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">dbt-core</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">DuckDB</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">dbt_utils</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">SQL</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">sqlfluff</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Streamlit</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Plotly</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">GitHub Actions</span>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10">
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">~100k</div><div class="text-sm text-slate-500">orders modelled (2016–2018)</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">22</div><div class="text-sm text-slate-500">dbt models in 3 layers</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">66</div><div class="text-sm text-slate-500">data tests, all passing</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">~10 s</div><div class="text-sm text-slate-500">full build on a laptop</div></div>
+    </div>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold mb-3">The problem</h2>
+      <p class="text-slate-600 leading-relaxed">Raw marketplace exports are messy. Customers get a new ID with every order, reviews are duplicated, categories are in Portuguese, and payment totals don't always match order values. Before anyone can answer <em>"how are sales trending, why are customers unhappy, and do they come back?"</em>, the data needs a clear, tested model with agreed definitions. That's what analytics engineering is for.</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Architecture</h2>
+      <div class="bg-white border border-slate-200 rounded-xl p-6 overflow-x-auto">
+        <pre class="mermaid">
+flowchart LR
+  A[Kaggle CSVs<br/>Olist dataset] --> B[(DuckDB)]
+  B --> C[staging<br/>8 views]
+  C --> D[intermediate<br/>3 views]
+  D --> E[core star schema<br/>facts + dimensions]
+  D --> F[analytics marts<br/>sales, delivery, RFM,<br/>cohorts, sellers]
+  E --> G[Streamlit dashboard]
+  F --> G
+        </pre>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Data model</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Staging &amp; intermediate</h3>
+          <p class="text-sm text-slate-600 mt-1">8 staging views rename and cast every source 1:1. 3 intermediate views dedupe, pivot and enrich.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Core star schema</h3>
+          <p class="text-sm text-slate-600 mt-1"><code>fct_orders</code>, <code>fct_order_items</code>, <code>dim_customers</code>, <code>dim_products</code>, <code>dim_sellers</code>, <code>dim_date</code></p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Analytics marts</h3>
+          <p class="text-sm text-slate-600 mt-1"><code>mart_monthly_sales</code>, <code>mart_delivery_performance</code>, <code>mart_customer_rfm</code>, <code>mart_cohort_retention</code>, <code>mart_seller_performance</code></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Key insights <span class="text-sm font-normal text-slate-500">(Jan 2017 – Aug 2018)</span></h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <div class="text-2xl font-extrabold text-indigo-600">R$ 13.4M</div>
+          <p class="text-sm text-slate-600 mt-1">GMV (product value, excluding freight) across about 98k valid orders, with an average order value of about R$ 137.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <div class="text-2xl font-extrabold text-rose-600">2.3★ vs 4.3★</div>
+          <p class="text-sm text-slate-600 mt-1">Average review for late vs on-time orders. About 7% of delivered orders are late, with the highest rates in CE, BA and RJ. Delivery is the biggest driver of satisfaction.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <div class="text-2xl font-extrabold text-amber-600">~3%</div>
+          <p class="text-sm text-slate-600 mt-1">of customers ever order twice, and month-1 cohort retention is under 0.5%. Growth here relies almost entirely on new customers.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <div class="text-2xl font-extrabold text-emerald-600">Top 5</div>
+          <p class="text-sm text-slate-600 mt-1">categories by GMV: health &amp; beauty, watches &amp; gifts, bed/bath/table, sports &amp; leisure, computers &amp; accessories.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Data quality decisions</h2>
+      <ul class="list-disc pl-5 space-y-2 text-slate-600">
+        <li><strong>Real customers, not order IDs:</strong> customers are keyed on <code>customer_unique_id</code>, because the source issues a new <code>customer_id</code> for every order. Without this, retention would be wildly wrong.</li>
+        <li><strong>One review per order:</strong> the most recently answered review is kept.</li>
+        <li><strong>Load as text, cast in staging:</strong> this preserves leading zeros in zip codes and makes every type conversion explicit.</li>
+        <li><strong>Category fallback:</strong> untranslated or missing categories fall back to the Portuguese name or <code>unknown</code>, so no rows disappear.</li>
+        <li><strong>Warn, don't fail:</strong> payment vs order-value mismatches are flagged as warnings, because they are real source quirks, not pipeline bugs.</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Quality &amp; CI</h2>
+      <p class="text-slate-600 leading-relaxed">66 data tests cover keys, relationships, accepted values, ranges and singular business rules. On every push, GitHub Actions lints the SQL with <strong>sqlfluff</strong> and compiles all models. When Kaggle credentials are available, it also runs the full build and publishes the dbt docs (with lineage) as an artifact.</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-4">Screenshots</h2>
+      <div class="space-y-5">
+        <figure>
+          <a href="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_overview.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_overview.jpg" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition" alt="Streamlit dashboard overview" /></a>
+          <figcaption class="text-sm text-slate-500 mt-2">Dashboard overview: sales KPIs and trends.</figcaption>
+        </figure>
+        <figure>
+          <a href="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_delivery.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/dashboard_delivery.jpg" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition" alt="Late delivery rate by state" /></a>
+          <figcaption class="text-sm text-slate-500 mt-2">Delivery performance: late-delivery rate by Brazilian state.</figcaption>
+        </figure>
+        <figure>
+          <a href="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/lineage.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/dhia-sa/ecommerce-analytics-dbt/main/docs/images/lineage.png" loading="lazy" class="w-full rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition bg-white" alt="dbt lineage graph" /></a>
+          <figcaption class="text-sm text-slate-500 mt-2">dbt lineage graph: sources → staging → intermediate → marts.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">What I learned</h2>
+      <p class="text-slate-600 leading-relaxed">Most of the work in analytics engineering is deciding <em>what the data means</em>: which ID is the real customer, which review counts, when a mismatch is a bug and when it's a quirk. Encoding those decisions as tested, documented dbt models turns one-off analysis into something a team can trust and build on.</p>
+    </section>
+
+    <p class="text-xs text-slate-400 mt-12">Data: <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce" class="underline" target="_blank" rel="noopener">Brazilian E-Commerce Public Dataset by Olist</a> (Kaggle).</p>
+  </main>
+</body>
+</html>
