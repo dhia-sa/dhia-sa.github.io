@@ -94,6 +94,14 @@ const PROJECTS = [
     tags: ["dbt", "DuckDB", "SQL", "Streamlit", "GitHub Actions"],
     link: "projects/ecommerce-analytics.html",
   },
+  {
+    title: "Tilik: Procurement Analytics Dashboard",
+    summary: "Full-stack app for spend by category, weekly commodity prices with alerts and a 4-week forecast, vendor scorecards, and an AI \"ask your data\" assistant whose numbers are verified by the backend.",
+    category: "Analytics & BI",
+    type: "Public",
+    tags: ["Rust (axum)", "React", "TypeScript", "SQLite", "AI Q&A"],
+    link: "projects/tilik.html",
+  },
 ];
 
 // ------------------------------------------------------------

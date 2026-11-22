@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tilik: Procurement Analytics Dashboard — Dhia Salsabila Azhar</title>
+  <meta name="description" content="Full-stack procurement analytics app: spend by category, weekly commodity prices with alerts and a 4-week forecast, vendor scorecards and AI data Q&A. Rust (axum) + React." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+  </script>
+  <style>body{font-family:Inter,system-ui,sans-serif}</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-5 h-16 flex items-center">
+      <a href="../index.html#projects" class="text-sm font-medium text-indigo-600 hover:underline">← Back to projects</a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-5 py-12">
+    <span class="text-xs font-medium bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Public project · open source</span>
+    <h1 class="text-3xl md:text-4xl font-extrabold mt-4">Tilik: Procurement Analytics Dashboard</h1>
+    <p class="text-lg text-slate-600 mt-3">A full-stack web app for procurement teams. It shows spend by category, weekly commodity prices with automatic alerts and a 4-week forecast, and vendor scorecards. A "Tanya Data" (ask your data) assistant answers questions in plain language using numbers queried from the database. The name comes from the Indonesian <em>menilik</em>, "to look closely".</p>
+
+    <div class="flex flex-wrap gap-3 mt-6">
+      <a href="https://dhia-sa.github.io/tilik/" target="_blank" rel="noopener" class="bg-indigo-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-indigo-700">Live demo ↗</a>
+      <a href="https://github.com/dhia-sa/tilik" target="_blank" rel="noopener" class="border border-slate-300 bg-white px-4 py-2.5 rounded-lg font-semibold hover:border-indigo-400">View code on GitHub ↗</a>
+    </div>
+
+    <div class="flex flex-wrap gap-2 mt-6 text-sm">
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Rust</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">axum</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">SQLite (sqlx)</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">React 19</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">TypeScript</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Tailwind CSS</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Recharts</span>
+      <span class="bg-white border border-slate-200 rounded px-2.5 py-1">Claude Code CLI</span>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10">
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">8,575</div><div class="text-sm text-slate-500">PO lines, 12 months of dummy data</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">~0.8 s</div><div class="text-sm text-slate-500">to validate and import all 12 months</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">53</div><div class="text-sm text-slate-500">backend tests, plus fmt &amp; clippy clean</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl p-5"><div class="text-2xl font-extrabold">3</div><div class="text-sm text-slate-500">roles with backend-enforced access</div></div>
+    </div>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold mb-3">The problem</h2>
+      <p class="text-slate-600 leading-relaxed">Procurement data usually lives in purchase-order exports and spreadsheets. Answering everyday questions, like <em>"why did raw-material spend jump this month, which commodity prices are rising, and which vendors keep delivering late?"</em>, means manual pivots that are slow and easy to get wrong. Tilik turns raw PO files into a validated database and answers those questions on one screen, with an AI assistant that is only allowed to quote numbers the database actually returned.</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Architecture</h2>
+      <div class="bg-white border border-slate-200 rounded-xl p-6 overflow-x-auto">
+        <pre class="mermaid">
+flowchart LR
+  A[PO &amp; vendor<br/>rating CSVs] -->|row-level validation<br/>preview, rollback| B[(SQLite)]
+  B --> C[Rust axum API<br/>analytics queries]
+  C --> D[React SPA<br/>dashboards + export]
+  D -->|question| E[Tanya Data]
+  E -->|schema + tools| F[Claude Code CLI<br/>local subprocess]
+  F -->|tool call| C
+  C -->|numbers verified| E
+        </pre>
+      </div>
+      <p class="text-sm text-slate-500 mt-2">One binary serves both the API and the built frontend.</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">What it does</h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Spend analysis</h3>
+          <p class="text-sm text-slate-600 mt-1">KPIs against the previous period, 12-month trends and drill-down by category, with spend changes decomposed into volume vs price effects. An "Explain with AI" button writes a short narrative from that table.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Commodity prices</h3>
+          <p class="text-sm text-slate-600 mt-1">Weekly weighted-average prices with unit normalization, week-on-week change, automatic spike alerts and a 4-week linear-regression forecast with a 95% uncertainty band.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Vendor scorecard</h3>
+          <p class="text-sm text-slate-600 mt-1">A weighted score (40/35/25 by default) that recalculates instantly when the weights change, labels for problem vendors, and detection of possible split POs: several small orders, same vendor and day, adding up past the approval limit.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Tanya Data (ask your data)</h3>
+          <p class="text-sm text-slate-600 mt-1">Plain-language questions are routed to one of 7 parameterized query tools through a JSON schema. The answer can only use numbers the backend returned, and every answer shows the tool and parameters it used.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Safe imports</h3>
+          <p class="text-sm text-slate-600 mt-1">CSV uploads are previewed first, with an error and reason for every bad row (wrong dates, "Rp 315.000"-style numbers, unknown units). Valid rows commit in one transaction, and any batch can be rolled back.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 class="font-semibold">Roles, export &amp; settings</h3>
+          <p class="text-sm text-slate-600 mt-1">Viewer, Data Admin and IT Admin roles (argon2 passwords, HttpOnly session cookies), Excel export that follows the active filters, and editable master data, thresholds and weights.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">Key design decisions</h2>
+      <ul class="list-disc pl-5 space-y-2 text-slate-600">
+        <li><strong>The AI never invents numbers:</strong> it picks a query tool and writes the summary, but the backend checks every number in the answer against the query result before showing it.</li>
+        <li><strong>No API key needed:</strong> the backend runs a logged-in Claude Code (or Codex) CLI as a subprocess. If no CLI is found, a rule-based mock with the same JSON shape keeps the app usable.</li>
+        <li><strong>Imports are reversible:</strong> each upload is one transaction tagged with a batch ID, so a rollback restores the KPIs exactly. This is covered by an integration test.</li>
+        <li><strong>Logic you can test:</strong> unit normalization, weighted averages, decomposition, scoring, anomaly detection and forecasting are pure functions with their own unit tests.</li>
+      </ul>
+    </section>
+
+    <section class="mt-10" id="live-demo">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <h2 class="text-xl font-bold">Live demo</h2>
+        <a href="https://dhia-sa.github.io/tilik/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold border border-slate-300 bg-white px-3 py-2 rounded-lg hover:border-indigo-400">Open full screen ↗</a>
+      </div>
+      <div class="rounded-xl border border-slate-200 shadow-sm overflow-hidden bg-white">
+        <iframe src="https://dhia-sa.github.io/tilik/" title="Tilik live demo" loading="lazy" class="w-full block h-[640px] md:h-[780px]"></iframe>
+      </div>
+      <p class="text-sm text-slate-500 mt-2">A read-only build of the same frontend with no backend: every page reads from a JSON snapshot of the local server. All dashboards, period presets, alerts, dark mode and 7 example Tanya Data questions work. Filters, imports, settings, export and free-text questions need the full app. The interface is in Indonesian.</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-bold mb-3">What I learned</h2>
+      <p class="text-slate-600 leading-relaxed">The hard part of an AI analytics assistant isn't the model, it's the guardrails. Constraining it to typed query tools and verifying its numbers on the server makes its answers something people can check, instead of something they have to trust.</p>
+    </section>
+
+    <p class="text-xs text-slate-400 mt-12">All data in this project is dummy data from a generator script. No real company data is used.</p>
+  </main>
+</body>
+</html>
